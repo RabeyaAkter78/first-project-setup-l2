@@ -8,9 +8,9 @@ main().catch(err => console.log(err));
 async function main() {
 
     try {
-        await mongoose.connect('mongodb://localhost:27017/' as string);
+        await mongoose.connect('mongodb://localhost:27017/studentsDB' as string);
 
-        app.listen(5002, () => {
+        app.listen(5000, () => {
             console.log(`Example app listening on port ${Config.port}`)
         })
     } catch (error) {

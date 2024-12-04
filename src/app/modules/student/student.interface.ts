@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+// import { Schema, model, connect } from 'mongoose';
 
 export type guardian = {
   fatherName: string;
@@ -19,12 +19,12 @@ export type userName = {
   middleName: string;
   lastName: string;
 };
-export type student = {
+export type Student = {
   id: string;
   name: userName;
   gender: 'male| female';
   email: string;
-  dateOfBirth?: student;
+  dateOfBirth?: Student;
   contactNumber: string;
   emergencyCOntactNo: string;
   bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
