@@ -16,13 +16,13 @@ export type localGuardian = {
 };
 export type userName = {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
 };
 export type Student = {
   id: string;
   name: userName;
-  gender: 'male| female';
+  gender: 'male'| 'female'| 'other';
   email: string;
   dateOfBirth?: Student;
   contactNumber: string;

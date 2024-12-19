@@ -2,32 +2,32 @@ import { student } from './student.interface';
 import { Request, Response } from "express";
 import { StudentServices } from "./student.service";
 import Joi from "joi"
+// import studentValidationSchema from './student.validation';
+import { z } from "zod";
 import studentValidationSchema from './student.validation';
-
 
 const createStudent = async (req: Request, res: Response) => {
     try {
-
-
-
-
-
-
+        // valiudate using zod
 
 
 
         const { student: studentData } = req.body;
+        // validate using Joi
 
-        const { error } = studentValidationSchema.validate(studentData);
+        // const { error, value } = studentValidationSchema.validate(studentData);
         // console.log({ error }, { value });
-        const result = await StudentServices.createStudentIntoDB(studentData)
-        if (error) {
-            res.status(500).json({
-                success: false,
-                message: "something went wrong",
-                error: error.details
-            })
-        }
+        // validation using zod:
+        const zodparseData= studentValidationSchema.parse(studentData)
+
+        const result = await StudentServices.createStudentIntoDB(zodparseData);
+        // if (error) {
+        //     res.status(500).json({
+        //         success: false,
+        //         message: "something went wrong",
+        //         error: error.details
+        //     })
+        // }
         //send response
         res.status(200).json({
             success: true,
