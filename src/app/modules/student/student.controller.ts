@@ -9,16 +9,13 @@ import studentValidationSchema from './student.validation';
 const createStudent = async (req: Request, res: Response) => {
     try {
         // valiudate using zod
-
-
-
         const { student: studentData } = req.body;
         // validate using Joi
 
         // const { error, value } = studentValidationSchema.validate(studentData);
         // console.log({ error }, { value });
         // validation using zod:
-        const zodparseData= studentValidationSchema.parse(studentData)
+        const zodparseData = studentValidationSchema.parse(studentData)
 
         const result = await StudentServices.createStudentIntoDB(zodparseData);
         // if (error) {
@@ -53,8 +50,12 @@ const getAllStudents = async (req: Request, res: Response) => {
             data: result,
         })
 
-    } catch (error) {
-        console.log(error)
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: "something went wrong",
+            error: error
+        })
     }
 };
 
@@ -67,8 +68,29 @@ const getSingleStudnet = async (req: Request, res: Response) => {
             message: "student is retrieved successfully",
             data: result,
         })
-    } catch (error) {
-        console.log(error)
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message:error.message || "something went wrong",
+            error: error
+        })
+    }
+};
+const deleteStudnet = async (req: Request, res: Response) => {
+    try {
+        const { studentID } = req.params;
+        const result = await StudentServices.deleteStudentFromDB(studentID);
+        res.status(200).json({
+            success: true,
+            message: "student is deleted successfully",
+            data: result,
+        })
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message:error.message || "something went wrong",
+            error: error
+        })
     }
 }
 
@@ -76,5 +98,6 @@ const getSingleStudnet = async (req: Request, res: Response) => {
 export const StudentsController = {
     createStudent,
     getAllStudents,
-    getSingleStudnet
+    getSingleStudnet,
+    deleteStudnet
 }

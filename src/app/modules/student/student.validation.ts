@@ -39,49 +39,12 @@ const localGuardianValidationSchema = z.object({
     contactNo: z.string().min(1, { message: "Contact number is required" }),
     address: z.string().min(1, { message: "Address is required" }),
 });
-const userNameSchema = z.object({
-    firstName: z
-        .string()
-        .trim()
-        .min(1, { message: "First name is required" })
-        .max(20, { message: "First name must be less than 20 characters" })
-        .refine(
-            (value) => value.charAt(0) === value.charAt(0).toUpperCase(),
-            { message: "First name must start with a capital letter" }
-        ),
-    middleName: z.string().optional(),
-    lastName: z.string().min(1, { message: "Last name is required" }),
-});
 
-// Define guardian schema
-const guardianSchema = z.object({
-    fatherName: z.string().min(1, { message: "Father's name is required" }),
-    fatherOccupation: z
-        .string()
-        .min(1, { message: "Father's occupation is required" }),
-    fatherContactNo: z
-        .string()
-        .min(1, { message: "Father's contact number is required" }),
-    motherName: z.string().min(1, { message: "Mother's name is required" }),
-    motherOccupation: z
-        .string()
-        .min(1, { message: "Mother's occupation is required" }),
-    motherContactNo: z
-        .string()
-        .min(1, { message: "Mother's contact number is required" }),
-});
-
-// Define localGuardian schema
-const localGuardianSchema = z.object({
-    name: z.string().min(1, { message: "Name is required" }),
-    occupation: z.string().min(1, { message: "Occupation is required" }),
-    contactNo: z.string().min(1, { message: "Contact number is required" }),
-    address: z.string().min(1, { message: "Address is required" }),
-});
 
 // Define main student schema
 const studentValidationSchema = z.object({
-    id: z.string().min(1, { message: "ID is required" }),
+    id: z.string(),
+    password: z.string().max(20, { message: "Password must be less than 20 characters" }),
     name: userNameValidationSchema,
     gender: z.enum(["male", "female", "other"], {
         errorMap: () => ({ message: "Gender must be 'male', 'female', or 'other'" }),
@@ -116,5 +79,6 @@ const studentValidationSchema = z.object({
     localGuardian: localGuardianValidationSchema,
     profileImg: z.string().optional(),
     isActive: z.enum(["active", "blocked"]).optional().default("active"),
+    isDeleted: z.boolean(),
 });
 export default studentValidationSchema;
