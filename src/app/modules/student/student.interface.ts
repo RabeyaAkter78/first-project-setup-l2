@@ -2,7 +2,7 @@
 
 import exp from "constants";
 import { promises } from "dns";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 
 
 export type TuserName = {
@@ -27,6 +27,7 @@ export type TlocalGuardian = {
 
 export type TStudent = {
   id: string;
+  user:Types.ObjectId
   password: string;
   name: TuserName;
   gender: 'male' | 'female' | 'other';
@@ -40,7 +41,6 @@ export type TStudent = {
   guardian: Tguardian;
   localGuardian: TlocalGuardian;
   profileImg?: string;
-  isActive: 'active' | 'blocked';
   isDeleted: boolean;
 };
 

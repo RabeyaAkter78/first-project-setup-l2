@@ -6,6 +6,5 @@ export type TUser = {
     role: 'admin' | 'faculty' | 'student';
     ststus: 'in-progress' | 'blocked';
     isDeleted: boolean;
+};
 
-
-}
