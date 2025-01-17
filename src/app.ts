@@ -14,11 +14,11 @@ app.use('/api/v1/students', StudentRoutes)
 
 
 
-const getAController = (req: Request, res: Response) => {
-    const a = 10;
-    res.send(a);
-}
+// const getAController = (req: Request, res: Response) => {
+//     const a = 10;
+//     res.send(a);
+// }
 
-app.get('/', getAController)
+// app.get('/', getAController)
 
 export default app;
