@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import httpStatus from 'http-status';
 
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StudentServices } from "./student.service";
+import sendResponse from "../../utils/sendResponse";
 
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await StudentServices.getAllStudentsFromDB();
         res.status(200).json({
@@ -12,46 +15,36 @@ const getAllStudents = async (req: Request, res: Response) => {
         })
 
     } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: "something went wrong",
-            error: error
-        })
+        next(error)
     }
 };
 
-const getSingleStudnet = async (req: Request, res: Response) => {
+const getSingleStudnet = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { studentID } = req.params;
         const result = await StudentServices.getSingleStudentFromDB(studentID);
-        res.status(200).json({
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
             success: true,
             message: "student is retrieved successfully",
-            data: result,
-        })
+            data: result
+        });
     } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "something went wrong",
-            error: error
-        })
+        next(error)
     }
 };
-const deleteStudnet = async (req: Request, res: Response) => {
+const deleteStudnet = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { studentID } = req.params;
         const result = await StudentServices.deleteStudentFromDB(studentID);
-        res.status(200).json({
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
             success: true,
             message: "student is deleted successfully",
-            data: result,
-        })
+            data: result
+        });
     } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "something went wrong",
-            error: error
-        })
+        next(error)
     }
 }
 
