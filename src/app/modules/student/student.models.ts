@@ -1,19 +1,13 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
-import validator from 'validator';
-import { Schema, model, connect } from 'mongoose';
+
+import { Schema, model, } from 'mongoose';
 import {
+  StudentModel,
   Tguardian,
   TlocalGuardian,
   TStudent,
-  StudentMethods,
-  studentModel,
   TuserName,
-  StudentModel,
 } from './student.interface';
-import studentValidationSchema from './student.validation';
-import { kMaxLength } from 'buffer';
-import bcrypt from 'bcrypt'
-import Config from '../../Config';
 
 const userNameSchema = new Schema<TuserName>({
   firstName: {
@@ -96,12 +90,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     unique: true,
     ref: 'User'
   },
-  password: {
-    type: String,
-    required: [true, 'password is required'],
 
-    kMaxLength: [20, 'password must be less than 20 characters'],
-  },
   name: {
     type: userNameSchema,
     required: [true, 'name is required'],
@@ -181,22 +170,7 @@ studentSchema.virtual('fullName').get(function () {
 
 // pre save middleware/hooks:will work on create() and save()
 
-studentSchema.pre('save', async function (next) {
-  // console.log(this, 'pree hook: we save the data');
 
-  // hasing password and save into DB:
-
-  const user = this; //this= currently processing document ke refer kore.
-  user.password = await bcrypt.hash(user.password, Number(Config.bcrypt_salt_rounds));
-  next();
-});
-
-
-// post save middleware/hooks:
-studentSchema.post('save', function (doc, next) {
-  doc.password = ''
-  next();
-})
 
 // query middleware:
 
@@ -215,30 +189,9 @@ studentSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
   next();
 });
-
-
-
-
-
-
-
-
-
-
-
-
 // creating a custom static method:
 studentSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
 }
-
-
-
-// createing a custom instance method:
-// studentSchema.methods.isUserExists = async function (id: string) {
-//   const exstingUser = await Student.findOne({ id });
-//   return exstingUser;
-// }
-
-export const Student = model<TStudent, studentModel>('Student', studentSchema);
+export const Student = model<TStudent, StudentModel>('Student', studentSchema);
